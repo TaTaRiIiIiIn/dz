@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import UsersList from "./pages/UsersList";
 import UserDetail from "./pages/UserDetail";
@@ -9,6 +9,7 @@ function App() {
     <Router>
       <Header />
       <Routes>
+        <Route path="/" element={<Navigate to="/users" replace />} />
         <Route path="/users" element={<UsersList />} />
         <Route path="/users/:id" element={<UserDetail />} />
         <Route path="*" element={<NotFound />} />

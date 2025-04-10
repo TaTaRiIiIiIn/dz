@@ -1,20 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers } from "../store/async/usersAsync";
+
 import UserCard from "../components/UserCard";
 
-const API_URL = "https://fakestoreapi.com/users";
-
 function UsersList() {
-  const [users, setUsers] = useState([]);
+  const dispatch = useDispatch();
+  const { usersList, loading, error } = useSelector((state) => state.users);
 
   useEffect(() => {
-    fetch(API_URL)
-      .then((res) => res.json())
-      .then((data) => setUsers(data));
-  }, []);
+    dispatch(fetchUsers());
+  }, [dispatch]);
+
+  if (loading) return <p className="p-10">Загрузка...</p>;
+  if (error) return <p className="p-10 text-red-500">Ошибка: {error}</p>;
 
   return (
     <div className="p-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-      {users.map((user) => (
+      {usersList.map((user) => (
         <UserCard key={user.id} user={user} />
       ))}
     </div>
